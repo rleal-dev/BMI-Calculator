@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 export const Container = styled.View`
-    padding: 30px;
     align-items: center;
     shadow-color: #000;
     shadow-opacity: 0.25;

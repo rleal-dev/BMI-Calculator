@@ -1,10 +1,6 @@
 import React from 'react'
-import { Container, Button, ButtonText } from './styles'
+import { Container } from './styles'
 
-export default () => (
-    <Container>
-        <Button>
-            <ButtonText>CALCULATE YOUR BMI</ButtonText>
-        </Button>
-    </Container>
+export default ({ children }) => (
+    <Container>{children}</Container>
 )

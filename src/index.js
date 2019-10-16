@@ -1,7 +1,7 @@
-import React from 'react'
-import Icon from 'react-native-vector-icons/Ionicons'
-import Slider from '@react-native-community/slider'
+import React, { useState } from 'react'
+import { StatusBar } from 'react-native'
 
+import Icon from 'react-native-vector-icons/Ionicons'
 import { Header, Footer } from './components'
 import {
     Container,
@@ -10,68 +10,107 @@ import {
     Gender,
     Text,
     HeightBox,
+    HeightSlider,
     WeightBox,
     AgeBox,
+    Decrement,
+    Increment,
+    Button,
+    ButtonText,
 } from './styles'
 
 function App() {
+
+    const [gender, setGender] = useState('male')
+    const [height, setHeight] = useState(150)
+    const [weight, setWeight] = useState(60)
+    const [age, setAge] = useState(20)
+
+    async function calculateBmi() {
+        // alert(JSON.stringify({gender, height, weight, age}))
+        const convertedHeight = height / 100
+
+        const result = weight / (convertedHeight * convertedHeight)
+        alert(result.toFixed(2) + ' Você está GORDA!')
+    }
+
     return (
         <Container>
+            <StatusBar backgroundColor='#222f3e' barStyle='light-content'/>
+
             <Header />
 
             <Content>
 
                 <InlineBox>
-                    <Gender>
-                        <Icon name='ios-male' size={80} color='#fff' type='Ionicons' />
+                    <Gender active={gender == 'male'} onPress={() => setGender('male')}>
+                        <Icon name='ios-male' size={50} color='#fff' type='Ionicons' />
                         <Text>MALE</Text>
                     </Gender>
 
-                    <Gender>
-                        <Icon name='ios-female' size={80} color='#fff' type='Ionicons'/>
+                    <Gender active={gender == 'female'} onPress={() => setGender('female')}>
+                        <Icon name='ios-female' size={50} color='#fff' type='Ionicons'/>
                         <Text>FEMALE</Text>
-
-                        <Slider
-                            style={{width: 200, height: 40}}
-                            minimumValue={0}
-                            maximumValue={1}
-                            minimumTrackTintColor="#FFFFFF"
-                            maximumTrackTintColor="#000000"
-                        />
                     </Gender>
 
                 </InlineBox>
                 
                 <HeightBox>
                     <Text>HEIGHT</Text>
-                    <Text number>186 cm</Text>
+                    <InlineBox>
+                        <Decrement onPress={() => setHeight(height - 1)}>
+                            <Icon name='ios-remove' size={35} color='#fff' type='Ionicons' />
+                        </Decrement>
+                        
+                        <Text number>{height} cm</Text>
+
+                        <Increment onPress={() => setHeight(height + 1)}>
+                            <Icon name='ios-add' size={35} color='#fff' type='Ionicons' />
+                        </Increment>
+                    </InlineBox>
+                    
+                    <HeightSlider value={height} onValueChange={setHeight} />
                 </HeightBox>
 
                 <InlineBox>
                     <WeightBox>
                         <Text>WEIGHT</Text>
-                        <Text number>74</Text>
+                        <Text number>{weight}</Text>
                         
                         <InlineBox>
-                            <Icon name='ios-remove' size={30} color='#fff' type='Ionicons' />
-                            <Icon name='ios-add' size={30} color='#fff' type='Ionicons' />
+                            <Decrement onPress={() => setWeight(weight - 1)}>
+                                <Icon name='ios-remove' size={35} color='#fff' type='Ionicons' />
+                            </Decrement>
+                            
+                            <Increment onPress={() => setWeight(weight + 1)}>
+                                <Icon name='ios-add' size={35} color='#fff' type='Ionicons' />
+                            </Increment>
                         </InlineBox>
                         
                     </WeightBox>
 
                     <AgeBox>
                         <Text>AGE</Text>
-                        <Text number>20</Text>
+                        <Text number>{age}</Text>
 
                         <InlineBox>
-                            <Icon name='ios-remove' size={30} color='#fff' type='Ionicons' />
-                            <Icon name='ios-add' size={30} color='#fff' type='Ionicons' />
+                            <Decrement onPress={() => setAge(age - 1)}>
+                                <Icon name='ios-remove' size={35} color='#fff' type='Ionicons' />
+                            </Decrement>
+                            
+                            <Increment onPress={() => setAge(age + 1)}>
+                                <Icon name='ios-add' size={35} color='#fff' type='Ionicons' />
+                            </Increment>
                         </InlineBox>
                     </AgeBox>
                 </InlineBox>
-            </Content>
             
-            <Footer />
+                <Footer>
+                    <Button onPress={calculateBmi}>
+                    <ButtonText>CALCULATE YOUR BMI</ButtonText>
+                    </Button>
+                </Footer>
+            </Content>
         </Container>
     )
 }
